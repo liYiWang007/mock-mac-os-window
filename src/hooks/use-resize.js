@@ -3,7 +3,7 @@ import { hasClass } from '@/assets/js/dom'
 
 
 // useResize
-export default (targetRef, resizeRef, position, emit) => {
+export default (targetRef, resizeRef, position, width,height) => {
     const resizeCursor = ref('default')
     let resizeDirection = []
     // 鼠标悬停时不同方向的箭头
@@ -65,27 +65,27 @@ export default (targetRef, resizeRef, position, emit) => {
         const targetHeight = targetRect.height
         const clientWidth = document.documentElement.clientWidth
         const clientHeight = document.documentElement.clientHeight
-        let width, height
+        let _width, _height
         const onMousemove2 = (e2) => {
             const downX = e2.clientX
             const downY = e2.clientY
             document.body.style['cursor'] = resizeCursor.value
             if (resizeDirection.includes('w')) {
                 // 确保变化范围都在可视区域内
-                width = Math.min(Math.max((downX - targetLeft), 460), (clientWidth - targetLeft))
-                emit('update:width', width)
+                _width = Math.min(Math.max((downX - targetLeft), 460), (clientWidth - targetLeft))
+                width.value=_width
             } else if (resizeDirection.includes('e')) {
-                width = Math.min(Math.max((-downX + targetLeft + targetWidth), 460), (targetWidth + targetLeft))
-                position.value.x = -width + targetWidth + targetLeft
-                emit('update:width', width)
+                _width = Math.min(Math.max((-downX + targetLeft + targetWidth), 460), (targetWidth + targetLeft))
+                position.value.x = -_width + targetWidth + targetLeft
+                width.value=_width
             }
             if (resizeDirection.includes('s')) {
-                height = Math.min(Math.max((downY - targetTop), 400), (clientHeight - targetTop))
-                emit('update:height', height)
+                _height = Math.min(Math.max((downY - targetTop), 400), (clientHeight - targetTop))
+                height.value=_height
             } else if (resizeDirection.includes('n')) {
                 height = Math.min(Math.max((-downY + targetTop + targetHeight), 400), ((targetHeight + targetTop)))
-                position.value.y = -height + targetHeight + targetTop
-                emit('update:height', height)
+                position.value.y = -_height + targetHeight + targetTop
+                height.value=_height
             }
         }
 
